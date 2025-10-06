@@ -1,0 +1,51 @@
+package main
+
+import (
+	"context"
+	"log"
+	"os"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/caiomp87/vehicle-resale-api/src/core/useCases/vehicle"
+	"github.com/caiomp87/vehicle-resale-api/src/presentation/vehicleApi"
+	"github.com/caiomp87/vehicle-resale-api/src/repository/vehicleRepository"
+)
+
+func main() {
+	var (
+		mongoURI      = os.Getenv("MONGO_URI")
+		mongoDatabase = os.Getenv("MONGO_DATABASE")
+	)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	clientOptions := options.Client().ApplyURI(mongoURI)
+
+	mongoClient, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatalf("could not initialize mongodb client: %v", err)
+	}
+
+	if err = mongoClient.Ping(ctx, nil); err != nil {
+		log.Fatalf("could not connect to database: %v", err)
+	}
+
+	database := mongoClient.Database(mongoDatabase)
+
+	vehicleRepository := vehicleRepository.NewVehicleRepository(database)
+	vehicleService := vehicle.NewVehicleService(vehicleRepository)
+
+	app := gin.Default()
+
+	vehicleApi.RegisterVehicleRoutes(app, vehicleService)
+
+	if err = app.Run(":4000"); err != nil {
+		log.Fatalf("coult not initialize http server: %v", err)
+	}
+}
