@@ -14,8 +14,8 @@ type Vehicle struct {
 	Color     string    `json:"color,omitempty" bson:"color,omitempty"`
 	Price     float64   `json:"price,omitempty" bson:"price,omitempty"`
 	Sold      bool      `json:"sold,omitempty" bson:"sold,omitempty"`
-	CreatedAt time.Time `json:"created_at" bson:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`
+	CreatedAt time.Time `json:"created_at" bson:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at" bson:"updated_at,omitempty"`
 }
 
 func VehicleFromDomain(vehicle entity.Vehicle) Vehicle {

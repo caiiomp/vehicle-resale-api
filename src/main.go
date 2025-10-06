@@ -36,9 +36,9 @@ func main() {
 		log.Fatalf("could not connect to database: %v", err)
 	}
 
-	database := mongoClient.Database(mongoDatabase)
+	collection := mongoClient.Database(mongoDatabase).Collection("vehicles")
 
-	vehicleRepository := vehicleRepository.NewVehicleRepository(database)
+	vehicleRepository := vehicleRepository.NewVehicleRepository(collection)
 	vehicleService := vehicle.NewVehicleService(vehicleRepository)
 
 	app := gin.Default()
