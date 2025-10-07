@@ -9,12 +9,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type VehicleRepository interface {
 	Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error)
 	GetByID(ctx context.Context, id string) (*entity.Vehicle, error)
-	Search(ctx context.Context) ([]entity.Vehicle, error)
+	Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error)
 	Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error)
 }
 
@@ -30,7 +31,9 @@ func NewVehicleRepository(collection *mongo.Collection) VehicleRepository {
 
 func (ref *vehicleRepository) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
 	record := model.VehicleFromDomain(vehicle)
-	record.Sold = false
+
+	var notSold bool
+	record.IsSold = &notSold
 
 	now := time.Now()
 	record.CreatedAt = now
@@ -81,8 +84,18 @@ func (ref *vehicleRepository) GetByID(ctx context.Context, id string) (*entity.V
 	return record.ToDomain(), nil
 }
 
-func (ref *vehicleRepository) Search(ctx context.Context) ([]entity.Vehicle, error) {
-	cursor, err := ref.collection.Find(ctx, bson.M{})
+func (ref *vehicleRepository) Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error) {
+	filter := bson.M{}
+
+	if isSold != nil {
+		filter["is_sold"] = *isSold
+	}
+
+	sort := bson.D{{Key: "price", Value: 1}}
+
+	findOptions := options.Find().SetSort(sort)
+
+	cursor, err := ref.collection.Find(ctx, filter, findOptions)
 	if err != nil {
 		if err == mongo.ErrNilCursor {
 			return nil, nil

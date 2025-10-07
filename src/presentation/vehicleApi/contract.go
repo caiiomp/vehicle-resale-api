@@ -31,7 +31,7 @@ type vehicleResponse struct {
 	Year      int       `json:"year"`
 	Color     string    `json:"color"`
 	Price     float64   `json:"price"`
-	Sold      bool      `json:"sold"`
+	IsSold    bool      `json:"is_sold"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -44,7 +44,7 @@ func vehicleResponseFromDomain(vehicle entity.Vehicle) vehicleResponse {
 		Year:      vehicle.Year,
 		Color:     vehicle.Color,
 		Price:     vehicle.Price,
-		Sold:      vehicle.Sold,
+		IsSold:    *vehicle.IsSold,
 		CreatedAt: vehicle.CreatedAt,
 		UpdatedAt: vehicle.UpdatedAt,
 	}
@@ -70,4 +70,8 @@ func (ref updateVehicleRequest) ToDomain() *entity.Vehicle {
 		Color: ref.Color,
 		Price: ref.Price,
 	}
+}
+
+type vehicleQuery struct {
+	IsSold *bool `form:"is_sold"`
 }

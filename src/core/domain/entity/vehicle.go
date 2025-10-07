@@ -9,7 +9,7 @@ type Vehicle struct {
 	Year      int
 	Color     string
 	Price     float64
-	Sold      bool
+	IsSold    *bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
