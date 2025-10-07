@@ -18,12 +18,6 @@ func RegisterVehicleRoutes(app *gin.Engine, vehicleService vehicle.VehicleServic
 		vehicleService: vehicleService,
 	}
 
-	// POST /vehicle => cadastrar veículo
-	// PATCH /vehicle/:vehicle_id => atualizar veículo
-	// POST /vehicle/:vehicle_id/buy => comprar veículo
-	// GET /vehicle => listar veículos à venda, ordenado por preço, do mais barato ao mais caro
-	// GET /vehicle => listar veículos vendidos, ordenado por preço, do mais barato ao mais caro
-
 	app.POST("/vehicle", service.create)
 	app.GET("/vehicle", service.search)
 	app.GET("/vehicle/:vehicle_id", service.get)
@@ -54,7 +48,13 @@ func (ref *vehicleApi) create(ctx *gin.Context) {
 }
 
 func (ref *vehicleApi) search(ctx *gin.Context) {
-	vehicles, err := ref.vehicleService.Search(ctx)
+	var query vehicleQuery
+	if err := ctx.ShouldBindQuery(&query); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	vehicles, err := ref.vehicleService.Search(ctx, query.IsSold)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -126,8 +126,9 @@ func (ref *vehicleApi) buy(ctx *gin.Context) {
 		return
 	}
 
+	var sold bool = true
 	vehicleToBuy := entity.Vehicle{
-		Sold: true,
+		IsSold: &sold,
 	}
 
 	vehicle, err := ref.vehicleService.Update(ctx, uri.ID, vehicleToBuy)

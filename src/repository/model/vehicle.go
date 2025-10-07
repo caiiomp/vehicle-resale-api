@@ -13,20 +13,20 @@ type Vehicle struct {
 	Year      int       `json:"year,omitempty" bson:"year,omitempty"`
 	Color     string    `json:"color,omitempty" bson:"color,omitempty"`
 	Price     float64   `json:"price,omitempty" bson:"price,omitempty"`
-	Sold      bool      `json:"sold,omitempty" bson:"sold,omitempty"`
+	IsSold    *bool     `json:"is_sold,omitempty" bson:"is_sold,omitempty"`
 	CreatedAt time.Time `json:"created_at" bson:"created_at,omitempty"`
 	UpdatedAt time.Time `json:"updated_at" bson:"updated_at,omitempty"`
 }
 
 func VehicleFromDomain(vehicle entity.Vehicle) Vehicle {
 	return Vehicle{
-		ID:    vehicle.ID,
-		Brand: vehicle.Brand,
-		Model: vehicle.Model,
-		Year:  vehicle.Year,
-		Color: vehicle.Color,
-		Price: vehicle.Price,
-		Sold:  vehicle.Sold,
+		ID:     vehicle.ID,
+		Brand:  vehicle.Brand,
+		Model:  vehicle.Model,
+		Year:   vehicle.Year,
+		Color:  vehicle.Color,
+		Price:  vehicle.Price,
+		IsSold: vehicle.IsSold,
 	}
 }
 
@@ -38,7 +38,7 @@ func (ref Vehicle) ToDomain() *entity.Vehicle {
 		Year:      ref.Year,
 		Color:     ref.Color,
 		Price:     ref.Price,
-		Sold:      ref.Sold,
+		IsSold:    ref.IsSold,
 		CreatedAt: ref.CreatedAt,
 		UpdatedAt: ref.UpdatedAt,
 	}

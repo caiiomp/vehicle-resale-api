@@ -10,7 +10,7 @@ import (
 type VehicleService interface {
 	Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error)
 	GetByID(ctx context.Context, id string) (*entity.Vehicle, error)
-	Search(ctx context.Context) ([]entity.Vehicle, error)
+	Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error)
 	Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error)
 }
 
@@ -32,8 +32,8 @@ func (ref *vehicleService) GetByID(ctx context.Context, id string) (*entity.Vehi
 	return ref.vehicleRepository.GetByID(ctx, id)
 }
 
-func (ref *vehicleService) Search(ctx context.Context) ([]entity.Vehicle, error) {
-	return ref.vehicleRepository.Search(ctx)
+func (ref *vehicleService) Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error) {
+	return ref.vehicleRepository.Search(ctx, isSold)
 }
 
 func (ref *vehicleService) Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error) {
