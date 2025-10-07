@@ -82,7 +82,7 @@ func (ref *vehicleRepository) GetByID(ctx context.Context, id string) (*entity.V
 }
 
 func (ref *vehicleRepository) Search(ctx context.Context) ([]entity.Vehicle, error) {
-	cursor, err := ref.collection.Find(ctx, nil)
+	cursor, err := ref.collection.Find(ctx, bson.M{})
 	if err != nil {
 		if err == mongo.ErrNilCursor {
 			return nil, nil
@@ -113,7 +113,11 @@ func (ref *vehicleRepository) Update(ctx context.Context, id string, vehicle ent
 		return nil, err
 	}
 
-	_, err = ref.collection.UpdateOne(ctx, bson.M{"_id": objectID}, record)
+	update := bson.M{
+		"$set": record,
+	}
+
+	_, err = ref.collection.UpdateOne(ctx, bson.M{"_id": objectID}, update)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +131,7 @@ func (ref *vehicleRepository) Update(ctx context.Context, id string, vehicle ent
 	}
 
 	var recordToReturn model.Vehicle
-	if err = result.Decode(&record); err != nil {
+	if err = result.Decode(&recordToReturn); err != nil {
 		return nil, err
 	}
 

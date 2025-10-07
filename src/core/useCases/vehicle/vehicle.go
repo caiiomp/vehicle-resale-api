@@ -24,18 +24,18 @@ func NewVehicleService(vehicleRepository vehicleRepository.VehicleRepository) Ve
 	}
 }
 
-func (v *vehicleService) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
-	panic("unimplemented")
+func (ref *vehicleService) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
+	return ref.vehicleRepository.Create(ctx, vehicle)
 }
 
-func (v *vehicleService) GetByID(ctx context.Context, id string) (*entity.Vehicle, error) {
-	panic("unimplemented")
+func (ref *vehicleService) GetByID(ctx context.Context, id string) (*entity.Vehicle, error) {
+	return ref.vehicleRepository.GetByID(ctx, id)
 }
 
-func (v *vehicleService) Search(ctx context.Context) ([]entity.Vehicle, error) {
-	panic("unimplemented")
+func (ref *vehicleService) Search(ctx context.Context) ([]entity.Vehicle, error) {
+	return ref.vehicleRepository.Search(ctx)
 }
 
-func (v *vehicleService) Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error) {
-	panic("unimplemented")
+func (ref *vehicleService) Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error) {
+	return ref.vehicleRepository.Update(ctx, id, vehicle)
 }

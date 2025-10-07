@@ -7,7 +7,7 @@ import (
 )
 
 type Vehicle struct {
-	ID        string    `json:"id,omitempty" bson:"id,omitempty"`
+	ID        string    `json:"id,omitempty" bson:"_id,omitempty"`
 	Brand     string    `json:"brand,omitempty" bson:"brand,omitempty"`
 	Model     string    `json:"model,omitempty" bson:"model,omitempty"`
 	Year      int       `json:"year,omitempty" bson:"year,omitempty"`
