@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"github.com/caiomp87/vehicle-resale-api/src/core/domain/entity"
+	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
 )
 
 type Vehicle struct {

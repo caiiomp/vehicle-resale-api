@@ -3,9 +3,9 @@ package vehicleApi
 import (
 	"net/http"
 
-	"github.com/caiomp87/vehicle-resale-api/src/core/domain/entity"
-	"github.com/caiomp87/vehicle-resale-api/src/core/responses"
-	"github.com/caiomp87/vehicle-resale-api/src/core/useCases/vehicle"
+	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
+	"github.com/caiiomp/vehicle-resale-api/src/core/responses"
+	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
 	"github.com/gin-gonic/gin"
 )
 

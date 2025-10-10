@@ -3,8 +3,8 @@ package vehicle
 import (
 	"context"
 
-	"github.com/caiomp87/vehicle-resale-api/src/core/domain/entity"
-	"github.com/caiomp87/vehicle-resale-api/src/repository/vehicleRepository"
+	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/vehicleRepository"
 )
 
 type VehicleService interface {

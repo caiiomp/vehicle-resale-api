@@ -1,4 +1,4 @@
-module github.com/caiomp87/vehicle-resale-api
+module github.com/caiiomp/vehicle-resale-api
 
 go 1.23.5
 

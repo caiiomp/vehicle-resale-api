@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/caiomp87/vehicle-resale-api/src/core/domain/entity"
-	"github.com/caiomp87/vehicle-resale-api/src/repository/model"
+	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
