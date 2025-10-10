@@ -11,9 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/caiomp87/vehicle-resale-api/src/core/useCases/vehicle"
-	"github.com/caiomp87/vehicle-resale-api/src/presentation/vehicleApi"
-	"github.com/caiomp87/vehicle-resale-api/src/repository/vehicleRepository"
+	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
+	"github.com/caiiomp/vehicle-resale-api/src/presentation/vehicleApi"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/vehicleRepository"
 )
 
 func main() {
