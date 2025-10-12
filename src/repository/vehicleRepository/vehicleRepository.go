@@ -32,9 +32,6 @@ func NewVehicleRepository(collection *mongo.Collection) VehicleRepository {
 func (ref *vehicleRepository) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
 	record := model.VehicleFromDomain(vehicle)
 
-	var notSold bool
-	record.IsSold = &notSold
-
 	now := time.Now()
 	record.CreatedAt = now
 	record.UpdatedAt = now
@@ -88,7 +85,13 @@ func (ref *vehicleRepository) Search(ctx context.Context, isSold *bool) ([]entit
 	filter := bson.M{}
 
 	if isSold != nil {
-		filter["is_sold"] = *isSold
+		filter = bson.M{
+			"sold_at": bson.M{"$eq": nil},
+		}
+
+		if *isSold {
+			filter["sold_at"] = bson.M{"$ne": nil}
+		}
 	}
 
 	sort := bson.D{{Key: "price", Value: 1}}

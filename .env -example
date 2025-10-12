@@ -1,3 +1,6 @@
 # Database
 MONGO_URI=""
 MONGO_DATABASE=""
+
+# JWT
+JWT_SECRET_KEY=""
