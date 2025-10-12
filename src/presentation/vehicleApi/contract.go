@@ -1,8 +1,6 @@
 package vehicleApi
 
 import (
-	"time"
-
 	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
 )
 
@@ -24,34 +22,9 @@ func (ref createVehicleRequest) ToDomain() *entity.Vehicle {
 	}
 }
 
-type vehicleResponse struct {
-	ID        string    `json:"id"`
-	Brand     string    `json:"brand"`
-	Model     string    `json:"model"`
-	Year      int       `json:"year"`
-	Color     string    `json:"color"`
-	Price     float64   `json:"price"`
-	IsSold    bool      `json:"is_sold"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
-func vehicleResponseFromDomain(vehicle entity.Vehicle) vehicleResponse {
-	return vehicleResponse{
-		ID:        vehicle.ID,
-		Brand:     vehicle.Brand,
-		Model:     vehicle.Model,
-		Year:      vehicle.Year,
-		Color:     vehicle.Color,
-		Price:     vehicle.Price,
-		IsSold:    *vehicle.IsSold,
-		CreatedAt: vehicle.CreatedAt,
-		UpdatedAt: vehicle.UpdatedAt,
-	}
-}
-
 type vehicleURI struct {
-	ID string `uri:"vehicle_id"`
+	VehicleID string `uri:"vehicle_id"`
+	UserID    string `uri:"user_id"`
 }
 
 type updateVehicleRequest struct {

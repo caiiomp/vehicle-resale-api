@@ -7,15 +7,15 @@ import (
 )
 
 type Vehicle struct {
-	ID        string    `json:"id"`
-	Brand     string    `json:"brand"`
-	Model     string    `json:"model"`
-	Year      int       `json:"year"`
-	Color     string    `json:"color"`
-	Price     float64   `json:"price"`
-	IsSold    bool      `json:"is_sold"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        string     `json:"id"`
+	Brand     string     `json:"brand"`
+	Model     string     `json:"model"`
+	Year      int        `json:"year"`
+	Color     string     `json:"color"`
+	Price     float64    `json:"price"`
+	SoldAt    *time.Time `json:"sold_at,omitempty"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
 }
 
 func VehicleFromDomain(vehicle entity.Vehicle) Vehicle {
@@ -26,7 +26,7 @@ func VehicleFromDomain(vehicle entity.Vehicle) Vehicle {
 		Year:      vehicle.Year,
 		Color:     vehicle.Color,
 		Price:     vehicle.Price,
-		IsSold:    *vehicle.IsSold,
+		SoldAt:    vehicle.SoldAt,
 		CreatedAt: vehicle.CreatedAt,
 		UpdatedAt: vehicle.UpdatedAt,
 	}

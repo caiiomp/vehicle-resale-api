@@ -3,26 +3,28 @@ package vehicleApi
 import (
 	"net/http"
 
-	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
 	"github.com/caiiomp/vehicle-resale-api/src/core/responses"
 	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
+	"github.com/caiiomp/vehicle-resale-api/src/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type vehicleApi struct {
 	vehicleService vehicle.VehicleService
+	authMiddleware middleware.AuthMiddleware
 }
 
-func RegisterVehicleRoutes(app *gin.Engine, vehicleService vehicle.VehicleService) {
+func RegisterVehicleRoutes(app *gin.Engine, authMiddleware middleware.AuthMiddleware, vehicleService vehicle.VehicleService) {
 	service := vehicleApi{
 		vehicleService: vehicleService,
+		authMiddleware: authMiddleware,
 	}
 
-	app.POST("/vehicle", service.create)
-	app.GET("/vehicle", service.search)
-	app.GET("/vehicle/:vehicle_id", service.get)
-	app.PATCH("/vehicle/:vehicle_id", service.update)
-	app.POST("/vehicle/:vehicle_id/buy", service.buy)
+	app.POST("/vehicles", authMiddleware.Auth, service.create)
+	app.GET("/vehicles", service.search)
+	app.GET("/vehicles/:vehicle_id", service.get)
+	app.PATCH("/vehicles/:vehicle_id", authMiddleware.Auth, service.update)
+	app.POST("/vehicles/:vehicle_id/sell", authMiddleware.Auth, service.sell)
 }
 
 func (ref *vehicleApi) create(ctx *gin.Context) {
@@ -60,10 +62,10 @@ func (ref *vehicleApi) search(ctx *gin.Context) {
 		return
 	}
 
-	response := make([]vehicleResponse, len(vehicles))
+	response := make([]responses.Vehicle, len(vehicles))
 
 	for i, vehicle := range vehicles {
-		response[i] = vehicleResponseFromDomain(vehicle)
+		response[i] = responses.VehicleFromDomain(vehicle)
 	}
 
 	ctx.JSON(http.StatusOK, response)
@@ -76,7 +78,7 @@ func (ref *vehicleApi) get(ctx *gin.Context) {
 		return
 	}
 
-	vehicle, err := ref.vehicleService.GetByID(ctx, uri.ID)
+	vehicle, err := ref.vehicleService.GetByID(ctx, uri.VehicleID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -87,7 +89,7 @@ func (ref *vehicleApi) get(ctx *gin.Context) {
 		return
 	}
 
-	response := vehicleResponseFromDomain(*vehicle)
+	response := responses.VehicleFromDomain(*vehicle)
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -104,7 +106,7 @@ func (ref *vehicleApi) update(ctx *gin.Context) {
 		return
 	}
 
-	vehicle, err := ref.vehicleService.Update(ctx, uri.ID, *request.ToDomain())
+	vehicle, err := ref.vehicleService.Update(ctx, uri.VehicleID, *request.ToDomain())
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -115,23 +117,18 @@ func (ref *vehicleApi) update(ctx *gin.Context) {
 		return
 	}
 
-	response := vehicleResponseFromDomain(*vehicle)
+	response := responses.VehicleFromDomain(*vehicle)
 	ctx.JSON(http.StatusOK, response)
 }
 
-func (ref *vehicleApi) buy(ctx *gin.Context) {
+func (ref *vehicleApi) sell(ctx *gin.Context) {
 	var uri vehicleURI
 	if err := ctx.ShouldBindUri(&uri); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var sold bool = true
-	vehicleToBuy := entity.Vehicle{
-		IsSold: &sold,
-	}
-
-	vehicle, err := ref.vehicleService.Update(ctx, uri.ID, vehicleToBuy)
+	vehicle, err := ref.vehicleService.Sell(ctx, uri.VehicleID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -142,6 +139,6 @@ func (ref *vehicleApi) buy(ctx *gin.Context) {
 		return
 	}
 
-	response := vehicleResponseFromDomain(*vehicle)
+	response := responses.VehicleFromDomain(*vehicle)
 	ctx.JSON(http.StatusOK, response)
 }
