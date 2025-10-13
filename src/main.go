@@ -11,9 +11,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/sale"
 	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
 	"github.com/caiiomp/vehicle-resale-api/src/middleware"
+	"github.com/caiiomp/vehicle-resale-api/src/presentation/saleApi"
 	"github.com/caiiomp/vehicle-resale-api/src/presentation/vehicleApi"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/saleRepository"
 	"github.com/caiiomp/vehicle-resale-api/src/repository/vehicleRepository"
 )
 
@@ -39,16 +42,23 @@ func main() {
 		log.Fatalf("could not connect to database: %v", err)
 	}
 
-	collection := mongoClient.Database(mongoDatabase).Collection("vehicles")
+	vehiclesCollection := mongoClient.Database(mongoDatabase).Collection("vehicles")
+	salesCollection := mongoClient.Database(mongoDatabase).Collection("sales")
 
-	vehicleRepository := vehicleRepository.NewVehicleRepository(collection)
-	vehicleService := vehicle.NewVehicleService(vehicleRepository)
+	vehicleRepository := vehicleRepository.NewVehicleRepository(vehiclesCollection)
+	saleRepository := saleRepository.NewSaleRepository(salesCollection)
+
+	vehicleService := vehicle.NewVehicleService(vehicleRepository, saleRepository)
+	saleService := sale.NewSaleService(saleRepository)
+
+	authMiddleware := middleware.NewAuthMiddleware(jwtSecretKey)
 
 	authMiddleware := middleware.NewAuthMiddleware(jwtSecretKey)
 
 	app := gin.Default()
 
 	vehicleApi.RegisterVehicleRoutes(app, authMiddleware, vehicleService)
+	saleApi.RegisterSaleRoutes(app, saleService)
 
 	if err = app.Run(":4000"); err != nil {
 		log.Fatalf("coult not initialize http server: %v", err)

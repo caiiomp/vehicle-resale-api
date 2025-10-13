@@ -3,35 +3,37 @@ package vehicle
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/saleRepository"
 	"github.com/caiiomp/vehicle-resale-api/src/repository/vehicleRepository"
 )
 
 type VehicleService interface {
-	Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error)
+	Create(ctx context.Context, vehicle entity.Vehicle, roleType string) (*entity.Vehicle, error)
 	GetByID(ctx context.Context, id string) (*entity.Vehicle, error)
 	Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error)
 	Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error)
-	Sell(ctx context.Context, vehicleID string) (*entity.Vehicle, error)
+	Sell(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error)
 }
 
 type vehicleService struct {
 	vehicleRepository vehicleRepository.VehicleRepository
+	saleRepository    saleRepository.SaleRepository
 }
 
-func NewVehicleService(vehicleRepository vehicleRepository.VehicleRepository) VehicleService {
+func NewVehicleService(vehicleRepository vehicleRepository.VehicleRepository, saleRepository saleRepository.SaleRepository) VehicleService {
 	return &vehicleService{
 		vehicleRepository: vehicleRepository,
+		saleRepository:    saleRepository,
 	}
 }
 
-func (ref *vehicleService) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
-	roleType := ctx.Value("role").(string)
-
+func (ref *vehicleService) Create(ctx context.Context, vehicle entity.Vehicle, roleType string) (*entity.Vehicle, error) {
 	if roleType != "ADMIN" {
-		return nil, errors.New("permission denied")
+		return nil, fmt.Errorf("role '%s' not allowed for this action", roleType)
 	}
 
 	return ref.vehicleRepository.Create(ctx, vehicle)
@@ -49,7 +51,7 @@ func (ref *vehicleService) Update(ctx context.Context, id string, vehicle entity
 	return ref.vehicleRepository.Update(ctx, id, vehicle)
 }
 
-func (ref *vehicleService) Sell(ctx context.Context, vehicleID string) (*entity.Vehicle, error) {
+func (ref *vehicleService) Sell(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error) {
 	vehicle, err := ref.vehicleRepository.GetByID(ctx, vehicleID)
 	if err != nil {
 		return nil, err
@@ -64,6 +66,18 @@ func (ref *vehicleService) Sell(ctx context.Context, vehicleID string) (*entity.
 	}
 
 	soldTime := time.Now()
+
+	sale := entity.Sale{
+		VehicleID: vehicleID,
+		UserID:    userID,
+		Price:     vehicle.Price,
+		SoldAt:    soldTime,
+	}
+
+	_, err = ref.saleRepository.Create(ctx, sale)
+	if err != nil {
+		return nil, err
+	}
 
 	soldVehicle := entity.Vehicle{
 		SoldAt: &soldTime,
