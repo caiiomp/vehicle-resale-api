@@ -53,6 +53,8 @@ func main() {
 
 	authMiddleware := middleware.NewAuthMiddleware(jwtSecretKey)
 
+	authMiddleware := middleware.NewAuthMiddleware(jwtSecretKey)
+
 	app := gin.Default()
 
 	vehicleApi.RegisterVehicleRoutes(app, authMiddleware, vehicleService)
