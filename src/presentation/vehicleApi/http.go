@@ -34,7 +34,9 @@ func (ref *vehicleApi) create(ctx *gin.Context) {
 		return
 	}
 
-	vehicle, err := ref.vehicleService.Create(ctx, *request.ToDomain())
+	roleType := ctx.GetString("role")
+
+	vehicle, err := ref.vehicleService.Create(ctx, *request.ToDomain(), roleType)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -128,7 +130,9 @@ func (ref *vehicleApi) sell(ctx *gin.Context) {
 		return
 	}
 
-	vehicle, err := ref.vehicleService.Sell(ctx, uri.VehicleID)
+	userID := ctx.GetString("user_id")
+
+	vehicle, err := ref.vehicleService.Sell(ctx, uri.VehicleID, userID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
