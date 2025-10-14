@@ -58,7 +58,7 @@ func (ref *vehicleService) Sell(ctx context.Context, vehicleID, userID string) (
 	}
 
 	if vehicle == nil {
-		return nil, errors.New("vehicle not found")
+		return nil, errors.New("vehicle does not exist")
 	}
 
 	if vehicle.SoldAt != nil {
