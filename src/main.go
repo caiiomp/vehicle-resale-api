@@ -8,11 +8,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/sale"
 	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
+
+	_ "github.com/caiiomp/vehicle-resale-api/src/docs"
 	"github.com/caiiomp/vehicle-resale-api/src/middleware"
 	"github.com/caiiomp/vehicle-resale-api/src/presentation/saleApi"
 	"github.com/caiiomp/vehicle-resale-api/src/presentation/vehicleApi"
@@ -55,10 +59,12 @@ func main() {
 
 	app := gin.Default()
 
+	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	vehicleApi.RegisterVehicleRoutes(app, authMiddleware, vehicleService)
 	saleApi.RegisterSaleRoutes(app, saleService)
 
-	if err = app.Run(":4000"); err != nil {
+	if err = app.Run(":4001"); err != nil {
 		log.Fatalf("coult not initialize http server: %v", err)
 	}
 }

@@ -14,6 +14,36 @@ type VehicleService struct {
 	mock.Mock
 }
 
+// Buy provides a mock function with given fields: ctx, vehicleID, userID
+func (_m *VehicleService) Buy(ctx context.Context, vehicleID string, userID string) (*entity.Vehicle, error) {
+	ret := _m.Called(ctx, vehicleID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Buy")
+	}
+
+	var r0 *entity.Vehicle
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) (*entity.Vehicle, error)); ok {
+		return rf(ctx, vehicleID, userID)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) *entity.Vehicle); ok {
+		r0 = rf(ctx, vehicleID, userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*entity.Vehicle)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
+		r1 = rf(ctx, vehicleID, userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Create provides a mock function with given fields: ctx, _a1, roleType
 func (_m *VehicleService) Create(ctx context.Context, _a1 entity.Vehicle, roleType string) (*entity.Vehicle, error) {
 	ret := _m.Called(ctx, _a1, roleType)
@@ -97,36 +127,6 @@ func (_m *VehicleService) Search(ctx context.Context, isSold *bool) ([]entity.Ve
 
 	if rf, ok := ret.Get(1).(func(context.Context, *bool) error); ok {
 		r1 = rf(ctx, isSold)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
-// Sell provides a mock function with given fields: ctx, vehicleID, userID
-func (_m *VehicleService) Sell(ctx context.Context, vehicleID string, userID string) (*entity.Vehicle, error) {
-	ret := _m.Called(ctx, vehicleID, userID)
-
-	if len(ret) == 0 {
-		panic("no return value specified for Sell")
-	}
-
-	var r0 *entity.Vehicle
-	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) (*entity.Vehicle, error)); ok {
-		return rf(ctx, vehicleID, userID)
-	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) *entity.Vehicle); ok {
-		r0 = rf(ctx, vehicleID, userID)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entity.Vehicle)
-		}
-	}
-
-	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
-		r1 = rf(ctx, vehicleID, userID)
 	} else {
 		r1 = ret.Error(1)
 	}
