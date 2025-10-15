@@ -95,5 +95,5 @@ Authorization: Bearer <token-jwt>
 
 Para acessar a documentação do serviço, acessar o seguinte endpoint: 
 ```
-http://localhost:4000/swagger/index.html
+http://localhost:4001/swagger/index.html
 ```
