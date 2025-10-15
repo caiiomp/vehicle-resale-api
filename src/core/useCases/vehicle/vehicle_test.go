@@ -168,13 +168,13 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
-func TestSell(t *testing.T) {
+func TestBuy(t *testing.T) {
 	ctx := context.TODO()
 	vehicleID := primitive.NewObjectID().Hex()
 	userID := primitive.NewObjectID().Hex()
 	unexpectedError := errors.New("unexpected error")
 
-	t.Run("should not sell vehicle when failed to get vehicle by id", func(t *testing.T) {
+	t.Run("should not buy vehicle when failed to get vehicle by id", func(t *testing.T) {
 		vehicleRepositoryMocked := mocks.NewVehicleRepository(t)
 		saleRepositoryMocked := mocks.NewSaleRepository(t)
 
@@ -183,7 +183,7 @@ func TestSell(t *testing.T) {
 
 		service := NewVehicleService(vehicleRepositoryMocked, nil)
 
-		actual, err := service.Sell(ctx, vehicleID, userID)
+		actual, err := service.Buy(ctx, vehicleID, userID)
 
 		assert.Nil(t, actual)
 		assert.Equal(t, unexpectedError, err)
@@ -191,7 +191,7 @@ func TestSell(t *testing.T) {
 		saleRepositoryMocked.AssertNumberOfCalls(t, "Create", 0)
 	})
 
-	t.Run("should not sell vehicle when vehicle does not exist", func(t *testing.T) {
+	t.Run("should not buy vehicle when vehicle does not exist", func(t *testing.T) {
 		vehicleRepositoryMocked := mocks.NewVehicleRepository(t)
 		saleRepositoryMocked := mocks.NewSaleRepository(t)
 
@@ -200,7 +200,7 @@ func TestSell(t *testing.T) {
 
 		service := NewVehicleService(vehicleRepositoryMocked, nil)
 
-		actual, err := service.Sell(ctx, vehicleID, userID)
+		actual, err := service.Buy(ctx, vehicleID, userID)
 
 		assert.Nil(t, actual)
 		assert.ErrorContains(t, err, "vehicle does not exist")
@@ -208,7 +208,7 @@ func TestSell(t *testing.T) {
 		saleRepositoryMocked.AssertNumberOfCalls(t, "Create", 0)
 	})
 
-	t.Run("should not sell vehicle when vehicle already sold", func(t *testing.T) {
+	t.Run("should not buy vehicle when vehicle already sold", func(t *testing.T) {
 		vehicleRepositoryMocked := mocks.NewVehicleRepository(t)
 		saleRepositoryMocked := mocks.NewSaleRepository(t)
 
@@ -223,7 +223,7 @@ func TestSell(t *testing.T) {
 
 		service := NewVehicleService(vehicleRepositoryMocked, nil)
 
-		actual, err := service.Sell(ctx, vehicleID, userID)
+		actual, err := service.Buy(ctx, vehicleID, userID)
 
 		assert.Nil(t, actual)
 		assert.ErrorContains(t, err, "vehicle already sold")
@@ -231,7 +231,7 @@ func TestSell(t *testing.T) {
 		saleRepositoryMocked.AssertNumberOfCalls(t, "Create", 0)
 	})
 
-	t.Run("should not sell vehicle when failed to create sale", func(t *testing.T) {
+	t.Run("should not buy vehicle when failed to create sale", func(t *testing.T) {
 		vehicleRepositoryMocked := mocks.NewVehicleRepository(t)
 		saleRepositoryMocked := mocks.NewSaleRepository(t)
 
@@ -245,14 +245,14 @@ func TestSell(t *testing.T) {
 
 		service := NewVehicleService(vehicleRepositoryMocked, saleRepositoryMocked)
 
-		actual, err := service.Sell(ctx, vehicleID, userID)
+		actual, err := service.Buy(ctx, vehicleID, userID)
 
 		assert.Nil(t, actual)
 		assert.Equal(t, unexpectedError, err)
 		vehicleRepositoryMocked.AssertNumberOfCalls(t, "Update", 0)
 	})
 
-	t.Run("should sell vehicle successfully", func(t *testing.T) {
+	t.Run("should buy vehicle successfully", func(t *testing.T) {
 		vehicleRepositoryMocked := mocks.NewVehicleRepository(t)
 		saleRepositoryMocked := mocks.NewSaleRepository(t)
 
@@ -268,7 +268,7 @@ func TestSell(t *testing.T) {
 
 		service := NewVehicleService(vehicleRepositoryMocked, saleRepositoryMocked)
 
-		actual, err := service.Sell(ctx, vehicleID, userID)
+		actual, err := service.Buy(ctx, vehicleID, userID)
 
 		assert.NotNil(t, actual)
 		assert.Nil(t, err)

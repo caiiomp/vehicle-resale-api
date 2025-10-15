@@ -16,7 +16,7 @@ type VehicleService interface {
 	GetByID(ctx context.Context, id string) (*entity.Vehicle, error)
 	Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error)
 	Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error)
-	Sell(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error)
+	Buy(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error)
 }
 
 type vehicleService struct {
@@ -51,7 +51,7 @@ func (ref *vehicleService) Update(ctx context.Context, id string, vehicle entity
 	return ref.vehicleRepository.Update(ctx, id, vehicle)
 }
 
-func (ref *vehicleService) Sell(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error) {
+func (ref *vehicleService) Buy(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error) {
 	vehicle, err := ref.vehicleRepository.GetByID(ctx, vehicleID)
 	if err != nil {
 		return nil, err

@@ -24,7 +24,6 @@ func (ref createVehicleRequest) ToDomain() *entity.Vehicle {
 
 type vehicleURI struct {
 	VehicleID string `uri:"vehicle_id"`
-	UserID    string `uri:"user_id"`
 }
 
 type updateVehicleRequest struct {
