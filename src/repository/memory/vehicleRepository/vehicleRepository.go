@@ -5,23 +5,17 @@ import (
 	"sort"
 	"time"
 
+	interfaces "github.com/caiiomp/vehicle-resale-api/src/core/_interfaces"
 	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
 	"github.com/caiiomp/vehicle-resale-api/src/repository/model"
 	"github.com/google/uuid"
 )
 
-type VehicleRepository interface {
-	Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error)
-	GetByID(ctx context.Context, id string) (*entity.Vehicle, error)
-	Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error)
-	Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error)
-}
-
 type vehicleRepository struct {
 	vehicles []model.Vehicle
 }
 
-func NewVehicleRepository() VehicleRepository {
+func NewVehicleRepository() interfaces.VehicleRepository {
 	return &vehicleRepository{
 		vehicles: []model.Vehicle{},
 	}
