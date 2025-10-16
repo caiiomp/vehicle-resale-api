@@ -3,16 +3,16 @@ package saleApi
 import (
 	"net/http"
 
+	interfaces "github.com/caiiomp/vehicle-resale-api/src/core/_interfaces"
 	"github.com/caiiomp/vehicle-resale-api/src/core/responses"
-	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/sale"
 	"github.com/gin-gonic/gin"
 )
 
 type saleApi struct {
-	saleService sale.SaleService
+	saleService interfaces.SaleService
 }
 
-func RegisterSaleRoutes(app *gin.Engine, saleService sale.SaleService) {
+func RegisterSaleRoutes(app *gin.Engine, saleService interfaces.SaleService) {
 	service := saleApi{
 		saleService: saleService,
 	}

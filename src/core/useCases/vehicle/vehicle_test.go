@@ -16,17 +16,6 @@ import (
 func TestCreate(t *testing.T) {
 	ctx := context.TODO()
 
-	t.Run("should not create vehicle when not allowed role", func(t *testing.T) {
-		service := NewVehicleService(nil, nil)
-
-		vehicle := entity.Vehicle{}
-
-		actual, err := service.Create(ctx, vehicle, "CUSTOMER")
-
-		assert.Nil(t, actual)
-		assert.ErrorContains(t, err, "not allowed for this action")
-	})
-
 	t.Run("should create vehicle successfully", func(t *testing.T) {
 		vehicle := entity.Vehicle{
 			Brand: "Some Brand",
@@ -43,7 +32,7 @@ func TestCreate(t *testing.T) {
 
 		service := NewVehicleService(vehicleRepositoryMocked, nil)
 
-		actual, err := service.Create(ctx, vehicle, "ADMIN")
+		actual, err := service.Create(ctx, vehicle)
 
 		assert.NotNil(t, actual)
 		assert.Nil(t, err)

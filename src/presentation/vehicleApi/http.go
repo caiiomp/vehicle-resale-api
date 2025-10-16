@@ -3,18 +3,18 @@ package vehicleApi
 import (
 	"net/http"
 
+	interfaces "github.com/caiiomp/vehicle-resale-api/src/core/_interfaces"
 	"github.com/caiiomp/vehicle-resale-api/src/core/responses"
-	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
 	"github.com/caiiomp/vehicle-resale-api/src/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type vehicleApi struct {
-	vehicleService vehicle.VehicleService
+	vehicleService interfaces.VehicleService
 	authMiddleware middleware.AuthMiddleware
 }
 
-func RegisterVehicleRoutes(app *gin.Engine, authMiddleware middleware.AuthMiddleware, vehicleService vehicle.VehicleService) {
+func RegisterVehicleRoutes(app *gin.Engine, authMiddleware middleware.AuthMiddleware, vehicleService interfaces.VehicleService) {
 	service := vehicleApi{
 		vehicleService: vehicleService,
 		authMiddleware: authMiddleware,
@@ -48,9 +48,7 @@ func (ref *vehicleApi) create(ctx *gin.Context) {
 		return
 	}
 
-	roleType := ctx.GetString("role")
-
-	vehicle, err := ref.vehicleService.Create(ctx, *request.ToDomain(), roleType)
+	vehicle, err := ref.vehicleService.Create(ctx, *request.ToDomain())
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, responses.ErrorResponse{
 			Error: err.Error(),

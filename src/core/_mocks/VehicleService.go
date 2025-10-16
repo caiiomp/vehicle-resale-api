@@ -6,6 +6,7 @@ import (
 	context "context"
 
 	entity "github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
+
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -44,9 +45,9 @@ func (_m *VehicleService) Buy(ctx context.Context, vehicleID string, userID stri
 	return r0, r1
 }
 
-// Create provides a mock function with given fields: ctx, _a1, roleType
-func (_m *VehicleService) Create(ctx context.Context, _a1 entity.Vehicle, roleType string) (*entity.Vehicle, error) {
-	ret := _m.Called(ctx, _a1, roleType)
+// Create provides a mock function with given fields: ctx, vehicle
+func (_m *VehicleService) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
+	ret := _m.Called(ctx, vehicle)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Create")
@@ -54,19 +55,19 @@ func (_m *VehicleService) Create(ctx context.Context, _a1 entity.Vehicle, roleTy
 
 	var r0 *entity.Vehicle
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, entity.Vehicle, string) (*entity.Vehicle, error)); ok {
-		return rf(ctx, _a1, roleType)
+	if rf, ok := ret.Get(0).(func(context.Context, entity.Vehicle) (*entity.Vehicle, error)); ok {
+		return rf(ctx, vehicle)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, entity.Vehicle, string) *entity.Vehicle); ok {
-		r0 = rf(ctx, _a1, roleType)
+	if rf, ok := ret.Get(0).(func(context.Context, entity.Vehicle) *entity.Vehicle); ok {
+		r0 = rf(ctx, vehicle)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*entity.Vehicle)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, entity.Vehicle, string) error); ok {
-		r1 = rf(ctx, _a1, roleType)
+	if rf, ok := ret.Get(1).(func(context.Context, entity.Vehicle) error); ok {
+		r1 = rf(ctx, vehicle)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -134,9 +135,9 @@ func (_m *VehicleService) Search(ctx context.Context, isSold *bool) ([]entity.Ve
 	return r0, r1
 }
 
-// Update provides a mock function with given fields: ctx, id, _a2
-func (_m *VehicleService) Update(ctx context.Context, id string, _a2 entity.Vehicle) (*entity.Vehicle, error) {
-	ret := _m.Called(ctx, id, _a2)
+// Update provides a mock function with given fields: ctx, id, vehicle
+func (_m *VehicleService) Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error) {
+	ret := _m.Called(ctx, id, vehicle)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Update")
@@ -145,10 +146,10 @@ func (_m *VehicleService) Update(ctx context.Context, id string, _a2 entity.Vehi
 	var r0 *entity.Vehicle
 	var r1 error
 	if rf, ok := ret.Get(0).(func(context.Context, string, entity.Vehicle) (*entity.Vehicle, error)); ok {
-		return rf(ctx, id, _a2)
+		return rf(ctx, id, vehicle)
 	}
 	if rf, ok := ret.Get(0).(func(context.Context, string, entity.Vehicle) *entity.Vehicle); ok {
-		r0 = rf(ctx, id, _a2)
+		r0 = rf(ctx, id, vehicle)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*entity.Vehicle)
@@ -156,7 +157,7 @@ func (_m *VehicleService) Update(ctx context.Context, id string, _a2 entity.Vehi
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, string, entity.Vehicle) error); ok {
-		r1 = rf(ctx, id, _a2)
+		r1 = rf(ctx, id, vehicle)
 	} else {
 		r1 = ret.Error(1)
 	}

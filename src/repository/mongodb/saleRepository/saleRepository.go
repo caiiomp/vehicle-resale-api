@@ -3,6 +3,7 @@ package saleRepository
 import (
 	"context"
 
+	interfaces "github.com/caiiomp/vehicle-resale-api/src/core/_interfaces"
 	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
 	"github.com/caiiomp/vehicle-resale-api/src/repository/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -10,16 +11,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type SaleRepository interface {
-	Create(ctx context.Context, sale entity.Sale) (*entity.Sale, error)
-	Search(ctx context.Context) ([]entity.Sale, error)
-}
-
 type saleRepository struct {
 	collection *mongo.Collection
 }
 
-func NewSaleRepository(collection *mongo.Collection) SaleRepository {
+func NewSaleRepository(collection *mongo.Collection) interfaces.SaleRepository {
 	return &saleRepository{
 		collection: collection,
 	}

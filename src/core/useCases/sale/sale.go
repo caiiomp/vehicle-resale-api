@@ -3,20 +3,15 @@ package sale
 import (
 	"context"
 
+	interfaces "github.com/caiiomp/vehicle-resale-api/src/core/_interfaces"
 	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
-	"github.com/caiiomp/vehicle-resale-api/src/repository/saleRepository"
 )
 
-type SaleService interface {
-	Create(ctx context.Context, sale entity.Sale) (*entity.Sale, error)
-	Search(ctx context.Context) ([]entity.Sale, error)
-}
-
 type saleService struct {
-	saleRepository saleRepository.SaleRepository
+	saleRepository interfaces.SaleRepository
 }
 
-func NewSaleService(saleRepository saleRepository.SaleRepository) SaleService {
+func NewSaleService(saleRepository interfaces.SaleRepository) interfaces.SaleService {
 	return &saleService{
 		saleRepository: saleRepository,
 	}

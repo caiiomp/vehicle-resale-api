@@ -6,6 +6,7 @@ import (
 	context "context"
 
 	entity "github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
+
 	mock "github.com/stretchr/testify/mock"
 )
 

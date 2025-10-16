@@ -3,39 +3,25 @@ package vehicle
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
+	interfaces "github.com/caiiomp/vehicle-resale-api/src/core/_interfaces"
 	"github.com/caiiomp/vehicle-resale-api/src/core/domain/entity"
-	"github.com/caiiomp/vehicle-resale-api/src/repository/saleRepository"
-	"github.com/caiiomp/vehicle-resale-api/src/repository/vehicleRepository"
 )
 
-type VehicleService interface {
-	Create(ctx context.Context, vehicle entity.Vehicle, roleType string) (*entity.Vehicle, error)
-	GetByID(ctx context.Context, id string) (*entity.Vehicle, error)
-	Search(ctx context.Context, isSold *bool) ([]entity.Vehicle, error)
-	Update(ctx context.Context, id string, vehicle entity.Vehicle) (*entity.Vehicle, error)
-	Buy(ctx context.Context, vehicleID, userID string) (*entity.Vehicle, error)
-}
-
 type vehicleService struct {
-	vehicleRepository vehicleRepository.VehicleRepository
-	saleRepository    saleRepository.SaleRepository
+	vehicleRepository interfaces.VehicleRepository
+	saleRepository    interfaces.SaleRepository
 }
 
-func NewVehicleService(vehicleRepository vehicleRepository.VehicleRepository, saleRepository saleRepository.SaleRepository) VehicleService {
+func NewVehicleService(vehicleRepository interfaces.VehicleRepository, saleRepository interfaces.SaleRepository) interfaces.VehicleService {
 	return &vehicleService{
 		vehicleRepository: vehicleRepository,
 		saleRepository:    saleRepository,
 	}
 }
 
-func (ref *vehicleService) Create(ctx context.Context, vehicle entity.Vehicle, roleType string) (*entity.Vehicle, error) {
-	if roleType != "ADMIN" {
-		return nil, fmt.Errorf("role '%s' not allowed for this action", roleType)
-	}
-
+func (ref *vehicleService) Create(ctx context.Context, vehicle entity.Vehicle) (*entity.Vehicle, error) {
 	return ref.vehicleRepository.Create(ctx, vehicle)
 }
 
