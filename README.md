@@ -72,6 +72,12 @@ Use **Postman**, **Insomnia**, **cURL** ou qualquer outro cliente **HTTP** para 
 - `POST /vehicles/:vehicle_id/buy` - Comprar um veículo (necessário token JWT de autenticação).
 - `GET /sales` - Listar todas as vendas.
 
+Os testes unitários e os testes de integração podem ser executados da seguinte forma respectivamente:
+```bash
+    go test ./... -v
+    go test -tags=integration -v ./...
+```
+
 ### 5. Exemplo de Uso
 
 Para realizar a compra de um veículo, o comprador deve fornecer um **token JWT válido** gerado pelo serviço de autenticação. O token deve ser incluído no cabeçalho da requisição:
