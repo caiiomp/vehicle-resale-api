@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -15,13 +14,14 @@ import (
 
 	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/sale"
 	"github.com/caiiomp/vehicle-resale-api/src/core/useCases/vehicle"
+	"github.com/caiiomp/vehicle-resale-api/src/presentation"
 
 	_ "github.com/caiiomp/vehicle-resale-api/src/docs"
 	"github.com/caiiomp/vehicle-resale-api/src/middleware"
 	"github.com/caiiomp/vehicle-resale-api/src/presentation/saleApi"
 	"github.com/caiiomp/vehicle-resale-api/src/presentation/vehicleApi"
-	"github.com/caiiomp/vehicle-resale-api/src/repository/saleRepository"
-	"github.com/caiiomp/vehicle-resale-api/src/repository/vehicleRepository"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/mongodb/saleRepository"
+	"github.com/caiiomp/vehicle-resale-api/src/repository/mongodb/vehicleRepository"
 )
 
 func main() {
@@ -46,18 +46,22 @@ func main() {
 		log.Fatalf("could not connect to database: %v", err)
 	}
 
+	// Collections
 	vehiclesCollection := mongoClient.Database(mongoDatabase).Collection("vehicles")
 	salesCollection := mongoClient.Database(mongoDatabase).Collection("sales")
 
+	// Repositories
 	vehicleRepository := vehicleRepository.NewVehicleRepository(vehiclesCollection)
 	saleRepository := saleRepository.NewSaleRepository(salesCollection)
 
+	// Services
 	vehicleService := vehicle.NewVehicleService(vehicleRepository, saleRepository)
 	saleService := sale.NewSaleService(saleRepository)
 
+	// Middlewares
 	authMiddleware := middleware.NewAuthMiddleware(jwtSecretKey)
 
-	app := gin.Default()
+	app := presentation.SetupServer()
 
 	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

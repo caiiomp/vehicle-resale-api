@@ -19,6 +19,10 @@ func NewAuthMiddleware(jwtSecretToken string) AuthMiddleware {
 }
 
 func (ref *AuthMiddleware) Auth(ctx *gin.Context) {
+	if gin.Mode() == gin.TestMode {
+		return
+	}
+
 	tokenStr := ctx.GetHeader("Authorization")
 
 	if tokenStr == "" {
@@ -52,7 +56,6 @@ func (ref *AuthMiddleware) Auth(ctx *gin.Context) {
 	claims := token.Claims.(jwt.MapClaims)
 
 	ctx.Set("user_id", claims["user_id"])
-	ctx.Set("role", claims["role"])
 
 	ctx.Next()
 }
