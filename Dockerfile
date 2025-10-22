@@ -17,6 +17,6 @@ WORKDIR /app
 
 COPY --from=builder /app/vehicle-resale-api .
 
-EXPOSE 4001
+EXPOSE 8080
 
 CMD ["./vehicle-resale-api"]

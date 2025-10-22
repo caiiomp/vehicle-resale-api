@@ -58,7 +58,7 @@ Certifique-se de que você tem as seguintes dependências instaladas:
     go run src/main.go
     ```
 
-    A API de veículos estará disponível em `http://localhost:4001`.
+    A API de veículos estará disponível em `http://localhost:8080`.
 
 ### 4. Testando a API de Veículos
 
@@ -101,5 +101,5 @@ Authorization: Bearer <token-jwt>
 
 Para acessar a documentação do serviço, acessar o seguinte endpoint: 
 ```
-http://localhost:4001/swagger/index.html
+http://localhost:8080/swagger/index.html
 ```

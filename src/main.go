@@ -68,7 +68,7 @@ func main() {
 	vehicleApi.RegisterVehicleRoutes(app, authMiddleware, vehicleService)
 	saleApi.RegisterSaleRoutes(app, saleService)
 
-	if err = app.Run(":4001"); err != nil {
+	if err = app.Run(":8080"); err != nil {
 		log.Fatalf("coult not initialize http server: %v", err)
 	}
 }
