@@ -15,10 +15,6 @@ spec:
       containers:
       - name: vehicle-resale-api
         image: caiomartinspereira/vehicle-resale-api:latest
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 4001
       imagePullSecrets:
