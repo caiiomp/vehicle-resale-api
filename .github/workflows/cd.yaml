@@ -9,10 +9,6 @@ jobs:
     name: Build Deploy
     runs-on: ubuntu-latest
 
-    env:
-      DOCKER_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
-      DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,15 +22,15 @@ jobs:
 
       - name: Build Image
         run: |
-          docker build -t $DOCKERHUB_USERNAME/vehicle-resale-api:latest .
+          docker build -t ${{ vars.DOCKERHUB_USERNAME }}/vehicle-resale-api:latest .
 
       - name: Login Docker Hub
         run: |
-          echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ vars.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Push Image
         run: |
-          docker push $DOCKERHUB_USERNAME/vehicle-resale-api:latest
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/vehicle-resale-api:latest
 
       - name: Deploy no GKE
         run: |
