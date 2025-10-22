@@ -19,8 +19,8 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
-          ports:
-          - containerPort: 4001
+        ports:
+        - containerPort: 4001
       imagePullSecrets:
       - name: dockerhub-secret
 
