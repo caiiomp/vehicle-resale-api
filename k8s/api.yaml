@@ -15,6 +15,19 @@ spec:
       containers:
       - name: vehicle-resale-api
         image: caiomartinspereira/vehicle-resale-api:latest
+        env: 
+        - name: MONGO_DATABASE
+          value: vehicle-resale-api
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef: 
+              name: vehicle-resale-api-secret
+              key: MONGO_URI
+        - name: JWT_SECRET_KEY
+          valueFrom:
+              secretKeyRef: 
+                name: vehicle-resale-api-secret
+                key: JWT_SECRET_KEY
         ports:
         - containerPort: 4001
       imagePullSecrets:
