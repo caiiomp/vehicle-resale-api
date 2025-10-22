@@ -22,7 +22,7 @@ jobs:
 
       - name: Authenticate GCP
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > gcp-key.json
+          printf '%s' "${{ secrets.GCP_SA_KEY }}" > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
@@ -42,3 +42,6 @@ jobs:
         run: |
           gcloud container clusters get-credentials fiap-postech --zone us-central1-a
           kubectl apply -f k8s/ -n vehicle-resale
+        
+      - name: Cleanup
+        run: rm gcp-key.json
