@@ -46,19 +46,15 @@ func main() {
 		log.Fatalf("could not connect to database: %v", err)
 	}
 
-	// Collections
 	vehiclesCollection := mongoClient.Database(mongoDatabase).Collection("vehicles")
 	salesCollection := mongoClient.Database(mongoDatabase).Collection("sales")
 
-	// Repositories
 	vehicleRepository := vehicleRepository.NewVehicleRepository(vehiclesCollection)
 	saleRepository := saleRepository.NewSaleRepository(salesCollection)
 
-	// Services
 	vehicleService := vehicle.NewVehicleService(vehicleRepository, saleRepository)
 	saleService := sale.NewSaleService(saleRepository)
 
-	// Middlewares
 	authMiddleware := middleware.NewAuthMiddleware(jwtSecretKey)
 
 	app := presentation.SetupServer()
