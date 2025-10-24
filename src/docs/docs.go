@@ -93,6 +93,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a vehicle",
                 "consumes": [
                     "application/json"
@@ -156,6 +161,15 @@ const docTemplate = `{
                     "Vehicle"
                 ],
                 "summary": "Get Vehicle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vehicle ID",
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -184,6 +198,11 @@ const docTemplate = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a vehicle",
                 "consumes": [
                     "application/json"
@@ -196,6 +215,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update Vehicle",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vehicle ID",
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Body",
                         "name": "user",
@@ -235,6 +261,11 @@ const docTemplate = `{
         },
         "/vehicles/{vehicle_id}/buy": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Buy a vehicle",
                 "consumes": [
                     "application/json"
@@ -246,6 +277,15 @@ const docTemplate = `{
                     "Vehicle"
                 ],
                 "summary": "Buy Vehicle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vehicle ID",
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -382,6 +422,14 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Digite \"Bearer {seu_token}\" para autenticar",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

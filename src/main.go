@@ -24,6 +24,10 @@ import (
 	"github.com/caiiomp/vehicle-resale-api/src/repository/mongodb/vehicleRepository"
 )
 
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
 func main() {
 	var (
 		mongoURI      = os.Getenv("MONGO_URI")

@@ -82,6 +82,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a vehicle",
                 "consumes": [
                     "application/json"
@@ -145,6 +150,15 @@
                     "Vehicle"
                 ],
                 "summary": "Get Vehicle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vehicle ID",
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -173,6 +187,11 @@
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a vehicle",
                 "consumes": [
                     "application/json"
@@ -185,6 +204,13 @@
                 ],
                 "summary": "Update Vehicle",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vehicle ID",
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Body",
                         "name": "user",
@@ -224,6 +250,11 @@
         },
         "/vehicles/{vehicle_id}/buy": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Buy a vehicle",
                 "consumes": [
                     "application/json"
@@ -235,6 +266,15 @@
                     "Vehicle"
                 ],
                 "summary": "Buy Vehicle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Vehicle ID",
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -371,6 +411,14 @@
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Digite \"Bearer {seu_token}\" para autenticar",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

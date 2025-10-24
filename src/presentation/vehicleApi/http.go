@@ -33,6 +33,7 @@ func RegisterVehicleRoutes(app *gin.Engine, authMiddleware middleware.AuthMiddle
 // @Tags Vehicle
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param user body vehicleApi.createVehicleRequest true "Body"
 // @Success 201 {object} responses.Vehicle
 // @Failure 204 {object} responses.ErrorResponse
@@ -108,6 +109,7 @@ func (ref *vehicleApi) search(ctx *gin.Context) {
 // @Tags Vehicle
 // @Accept json
 // @Produce json
+// @Param vehicle_id path string true "Vehicle ID"
 // @Success 200 {object} responses.Vehicle
 // @Failure 204 {object} responses.ErrorResponse
 // @Failure 400 {object} responses.ErrorResponse
@@ -145,6 +147,8 @@ func (ref *vehicleApi) get(ctx *gin.Context) {
 // @Tags Vehicle
 // @Accept json
 // @Produce json
+// @Security BearerAuth
+// @Param vehicle_id path string true "Vehicle ID"
 // @Param user body vehicleApi.updateVehicleRequest false "Body"
 // @Success 200 {object} responses.Vehicle
 // @Failure 204 {object} responses.ErrorResponse
@@ -191,6 +195,8 @@ func (ref *vehicleApi) update(ctx *gin.Context) {
 // @Tags Vehicle
 // @Accept json
 // @Produce json
+// @Security BearerAuth
+// @Param vehicle_id path string true "Vehicle ID"
 // @Success 200 {object} responses.Vehicle
 // @Failure 204 {object} responses.ErrorResponse
 // @Failure 400 {object} responses.ErrorResponse

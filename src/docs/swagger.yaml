@@ -154,6 +154,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create Vehicle
       tags:
       - Vehicle
@@ -162,6 +164,12 @@ paths:
       consumes:
       - application/json
       description: Get a vehicle
+      parameters:
+      - description: Vehicle ID
+        in: path
+        name: vehicle_id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -189,6 +197,11 @@ paths:
       - application/json
       description: Update a vehicle
       parameters:
+      - description: Vehicle ID
+        in: path
+        name: vehicle_id
+        required: true
+        type: string
       - description: Body
         in: body
         name: user
@@ -213,6 +226,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update Vehicle
       tags:
       - Vehicle
@@ -221,6 +236,12 @@ paths:
       consumes:
       - application/json
       description: Buy a vehicle
+      parameters:
+      - description: Vehicle ID
+        in: path
+        name: vehicle_id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -240,7 +261,15 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/responses.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Buy Vehicle
       tags:
       - Vehicle
+securityDefinitions:
+  BearerAuth:
+    description: Digite "Bearer {seu_token}" para autenticar
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
